@@ -88,6 +88,8 @@ router.post("/apply-doctor-account",  authmiddeleware, async (req, res) => {
 
     };
 });
+
+
 router.post("/mark-all-notifications-as-seen",  authmiddeleware, async (req, res) => {
     try {
           const user=await User.findOne({_id: req.body.userId});

@@ -45,5 +45,13 @@ router.post('/update-doctor-profile', authMiddleware, async (req, res) => {
         });
     }
 });
-
+router.get("/all", async (req, res) => {
+  try {
+     console.log("inside /all route");
+    const doctors = await Doctor.find({});
+    res.json({ success: true, doctors });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+});
 module.exports = router;
