@@ -130,7 +130,42 @@ router.get("/profile", authmiddeleware, async (req, res) => {
     });
   }
 });
+//cancel appointments 
+router.post(
+  "/cancel-appointment",
+  authmiddeleware,
+  async (req, res) => {
+    try {
+      const { appointmentId } = req.body;
 
+      const appointment = await AppointmentModal.findById(appointmentId);
+
+      if (!appointment) {
+        return res.status(404).send({
+          success: false,
+          message: "Appointment not found",
+        });
+      }
+
+      if (appointment.status !== "booked") {
+        return res.status(400).send({
+          success: false,
+          message: "Cannot cancel this appointment",
+        });
+      }
+
+      appointment.status = "cancelled";
+      await appointment.save();
+
+      res.send({
+        success: true,
+        message: "Appointment cancelled successfully",
+      });
+    } catch (error) {
+      res.status(500).send({ success: false });
+    }
+  }
+);
 
 router.post("/mark-all-notifications-as-seen",  authmiddeleware, async (req, res) => {
     try {
