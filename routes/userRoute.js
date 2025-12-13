@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
 const Doctor=require("../models/doctorModel");
+const AppointmentModal= require( "../models/appointment");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const authmiddeleware = require("../middlewares/authMiddelware");
@@ -87,6 +88,47 @@ router.post("/apply-doctor-account",  authmiddeleware, async (req, res) => {
         res.status(500).send({ message: "Error Applying Doctor Account", success: false, error: error.message });
 
     };
+});
+
+// routes/appointmentRoutes.js
+router.get(
+  "/user-appointments",
+  authmiddeleware,
+  async (req, res) => {
+    try {
+      const appointments = await AppointmentModal.find({
+        userId: req.body.userId,
+      })
+        .populate("doctorId", "firstName lastName specialization")
+        .sort({ createdAt: -1 });
+
+      res.send({
+        success: true,
+        appointments,
+      });
+    } catch (error) {
+      res.status(500).send({
+        success: false,
+        message: "Failed to fetch appointments",
+      });
+    }
+  }
+);
+// routes/userRoutes.js
+router.get("/profile", authmiddeleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.body.userId).select("-password");
+
+    res.send({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Failed to fetch profile",
+    });
+  }
 });
 
 
