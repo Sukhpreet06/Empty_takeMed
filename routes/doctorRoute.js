@@ -6,8 +6,10 @@ const AppointmentModal= require( "../models/appointment");
 
 router.post('/get-doctor-info-by-user-id', authMiddleware, async (req, res) => {
     try {
+      console.log("inside /get-doctor-info-by-user-id route ");
+      console.log("req.body.userId------",req.body.userId);
         const doctor = await Doctor.findOne({ userId: req.body.userId });
-
+         console.log("Doctor----",doctor);
         if (!doctor) {
             return res.status(404).send({
                 success: false,
@@ -88,7 +90,12 @@ router.post("/bookappointment", authMiddleware, async (req, res) => {
     });
 
   } catch (error) {
-    console.log(error);
+    if (error.code === 11000) {
+      return res.status(400).send({
+        success: false,
+        message: "Doctor is not available at this time",
+      });
+    }
     res.status(500).send({ success: false, error });
   }
 });

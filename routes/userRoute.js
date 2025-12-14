@@ -91,29 +91,66 @@ router.post("/apply-doctor-account",  authmiddeleware, async (req, res) => {
 });
 
 // routes/appointmentRoutes.js
+// router.get(
+//   "/user-appointments",
+//   authmiddeleware,
+//   async (req, res) => {
+//     try {
+//       const appointments = await AppointmentModal.find({
+//         userId: req.body.userId,
+//       })
+//         .populate("doctorId", "firstName lastName specialization")
+//         .sort({ createdAt: -1 });
+
+//       res.send({
+//         success: true,
+//         appointments,
+//       });
+//     } catch (error) {
+//       res.status(500).send({
+//         success: false,
+//         message: "Failed to fetch appointments",
+//       });
+//     }
+//   }
+// );
+
 router.get(
   "/user-appointments",
   authmiddeleware,
   async (req, res) => {
     try {
-      const appointments = await AppointmentModal.find({
-        userId: req.body.userId,
-      })
-        .populate("doctorId", "firstName lastName specialization")
-        .sort({ createdAt: -1 });
+      const user = await User.findById(req.body.userId);
+
+      let appointments;
+
+      if (user.isDoctor) {
+        // Doctor → appointments booked for this doctor
+        const doctor = await Doctor.findOne({ userId: req.body.userId });
+
+        appointments = await AppointmentModal.find({
+          doctorId: doctor._id,
+        })
+          .populate("userId", "name email")
+          .populate("doctorId", "firstName lastName");
+      } else {
+        // User → appointments they booked
+        appointments = await AppointmentModal.find({
+          userId: req.body.userId,
+        })
+          .populate("doctorId", "firstName lastName");
+      }
 
       res.send({
         success: true,
-        appointments,
+        data: appointments,
       });
     } catch (error) {
-      res.status(500).send({
-        success: false,
-        message: "Failed to fetch appointments",
-      });
+      res.status(500).send({ success: false, error });
     }
   }
 );
+
 // routes/userRoutes.js
 router.get("/profile", authmiddeleware, async (req, res) => {
   try {
