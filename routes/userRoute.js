@@ -6,6 +6,7 @@ const AppointmentModal= require( "../models/appointment");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const authmiddeleware = require("../middlewares/authMiddelware");
+const transporter = require('../config/mail.js')
 router.post("/register", async (req, res) => {
     try {
         const userExists = await User.findOne({ email: req.body.email });
@@ -18,8 +19,19 @@ router.post("/register", async (req, res) => {
         req.body.password = hashedPassword;
         const newuser = new User(req.body); 
         await newuser.save();
+        await transporter.sendMail({
+      from: `"My App" <${process.env.EMAIL_USER}>`,
+      to: req.body.email,
+      subject: "Welcome to My App 🎉",
+      html: `
+        <h2>Hello ${req.body.email}</h2>
+        <p>Thanks for registering with us.</p>
+        <p>We are happy to have you!</p>
+      `
+    });
         res.status(200).send({ message: "User Created Succesfully", success: true });
     } catch (error) {
+      console.log("error on register ",error)
         res.status(500).send({ message: "Error Creating User", success: false.error });
     };
 });
@@ -38,6 +50,17 @@ router.post("/login", async (req, res) => {
             const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
                 expiresIn: "1d",
             })
+             await transporter.sendMail({
+      from: `"My App" <${process.env.EMAIL_USER}>`,
+      to: req.body.email,
+      subject: "Login successfull",
+      html: `
+        <h2>Hello  Mr. ${req.body.nam || "karma"}</h2>
+        <p>Thanks for Connecting  with us.</p>
+        <p>We are happy now you can enjoy the easy Booking appointment using this webApp !</p>
+        <p> if you face any problem then please contact <${process.env.EMAIL_USER}></p>
+      `
+    });
             res.status(200).send({ message: "Login Succesfull", success: true, data: token });
         }
 
