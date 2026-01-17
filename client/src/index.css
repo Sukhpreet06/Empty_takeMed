@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+*{
+  font-family: "Plus Jakarta Sans", serif !important;
+}
+/* antd override styling */
+input{
+  border-radius: 2px solid black !important;
+  border: 1 px solid gray !important;
+  height: 40px solid !important;
+}
+input:focus{
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1px solid gray !important;
+
+}
+label{
+  font-size: 16px !important;
+  color: black !important;
+}
+.ant-form-item{
+  margin: 10px 0 !important;
+}
+.ant-picker-input input{
+  border: none !important;
+}
+.ant-picker{
+  border-radius: 2px solid black !important;
+  border: 1 px solid gray !important;
+  height: 40px solid !important;
+}
+/* common card styling  */
+.spinner-parent{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.484);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  height: 100%;
+  width: 100%;
+
+}
+.spinner-border{
+  height: 5rem ;
+  width: 5rem;
+  color: white !important;
+}
+
+.page-title{
+  font-size: 25px;
+  color: black;
+  font-weight: bold;
+}
+
+.card-title{
+  font-size: 22px;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.627) ;
+
+}
+.normal-text{
+  font-size: 1rem;
+}
+.card{
+  box-shadow: 0 0 2px gray;
+  border-radius: 0 !important;
+  background-color: lightyellow!important;
+}
+.primary-button{
+  background-color: #005555 !important;
+  border-color: #005555 !important;
+  height:40px !important;
+  width: 100% !important;
+  color: white !important;
+  font-size: 17px !important;
+  width: max-content !important;
+}
+.full-width-button{
+  width: 100% !important;
+}
+.anchor{
+  color: black !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+}
+.anchor:hover{
+  text-decoration: underline !important;
+}
+/* authentication pages  */
+.authentication{
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color:#005555!important ;
+}
+.authentication-form {
+  width: 400px;
+}
+.authentication .card-title{
+  font-size: 1.5rem;
+  font-weight: lighter;
+  background-color: orangered;
+  color: wheat!important;
+  max-width: max-content !important;
+  padding: 7px 15px;
+  margin-left: -40px;
+  border-bottom-left-radius:10px ;
+}

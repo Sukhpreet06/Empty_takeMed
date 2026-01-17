@@ -1,0 +1,52 @@
+.myappointment-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  width: 100%; /* ensure grid takes full space */
+  margin-top: 20px;
+}
+
+.myappointments-container {
+  padding: 20px;
+}
+
+.myappointment-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word;
+  border-left: 2px solid #52c41a !important;
+}
+
+.mystatus {
+  padding: 4px 10px;
+  border-radius: 5px;
+  text-transform: capitalize;
+}
+
+.mystatus.booked {
+  background: #e6f7ff;
+  color: #1890ff;
+}
+
+.mystatus.cancelled {
+  background: #fff1f0;
+  color: #ff4d4f;
+}
+
+.mystatus.completed {
+  background: #f6ffed;
+  color: #52c41a;
+}
+@media (min-width: 768px) {
+  .myappointment-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .myappointment-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
